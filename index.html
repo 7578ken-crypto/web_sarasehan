@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistem Informasi Kelas & Sarasehan</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- SCREEN LOGIN UTAMA -->
+    <div id="auth-screen" class="auth-screen">
+        <div class="auth-card">
+            <h2>Selamat Datang</h2>
+            <p class="auth-subtitle">Silakan masuk untuk mengakses Sistem Informasi Kelas</p>
+
+            <div class="role-selector">
+                <button id="btn-role-user" class="role-btn active">Masuk sebagai Siswa/Guest</button>
+                <button id="btn-role-admin" class="role-btn">Masuk sebagai Admin</button>
+            </div>
+
+            <!-- Form User/Siswa -->
+            <form id="form-user-login" class="auth-form">
+                <p class="info-text">Akses penuh informasi kegiatan, daftar anggota kelas, dan galeri media.</p>
+                <button type="submit" class="btn-primary btn-block">Masuk Halaman Kelas</button>
+            </form>
+
+            <!-- Form Admin -->
+            <form id="form-admin-login" class="auth-form hidden">
+                <div class="form-group">
+                    <label for="admin-username">Username Admin</label>
+                    <input type="text" id="admin-username" placeholder="Masukkan username" required>
+                </div>
+                <div class="form-group">
+                    <label for="admin-password">Password Admin</label>
+                    <input type="password" id="admin-password" placeholder="Masukkan password" required>
+                </div>
+                <p id="admin-login-error" class="error-text hidden">Username atau password salah!</p>
+                <button type="submit" class="btn-primary btn-block">Login Admin</button>
+                <p class="login-hint">Default: Username <code>admin</code> | Password <code>admin123</code></p>
+            </form>
+        </div>
+    </div>
+
+    <!-- MAIN APP SCREEN -->
+    <div id="main-app" class="main-app hidden">
+        <!-- Header Navigation -->
+        <header class="navbar">
+            <div class="logo">   </div>
+            
+            <nav>
+                <ul class="nav-links">
+                    <li><button class="nav-btn active" data-tab="kegiatan">Kegiatan</button></li>
+                    <li><button class="nav-btn" data-tab="anggota">Anggota Kelas</button></li>
+                    <li><button class="nav-btn" data-tab="gallery">Gallery</button></li>
+                </ul>
+            </nav>
+
+            <div class="auth-box">
+                <span id="user-status-badge" class="badge badge-guest">Siswa/Guest</span>
+                <button id="btn-logout-app" class="btn-outline">Keluar / Switch Account</button>
+            </div>
+        </header>
+
+        <!-- Main Content Container -->
+        <main class="container">
+
+            <!-- TAB 1: KEGIATAN -->
+            <section id="tab-kegiatan" class="tab-content active">
+                <div class="hero-card">
+                    <span class="tag-primary">Kegiatan Utama</span>
+                    <h2>Sarasehan Kelas: Kebersamaan & Kepedulian Sosial</h2>
+                    <p class="hero-desc">
+                        <strong>Sarasehan</strong> adalah kegiatan tahunan menginap di sekolah selama 2 hari 1 malam. 
+                        Kegiatan ini bertujuan untuk mempererat tali persaudaraan antaranggota kelas melalui dinamika kelompok di sekolah pada hari pertama, 
+                        serta menumbuhkan rasa empati dan kepedulian sosial melalui kunjungan bakti sosial ke Gereja Santo Paulus Kleco pada hari kedua.
+                    </p>
+                    <div class="hero-meta">
+                        <span>📅 Durasi: 2 Hari 1 Malam</span>
+                        <span>📍 Lokasi: Sekolah & Gereja Santo Paulus Kleco </span>
+                    </div>
+                </div>
+
+                <!-- Rundown 2 Hari Sarasehan -->
+                <h2 class="section-title">Rundown Kegiatan Sarasehan (2 Hari)</h2>
+                <div class="timeline-grid">
+                    <div class="timeline-card">
+                        <div class="timeline-header day-1">
+                            <h3>HARI PERTAMA: Dinamika Kelas & Menginap di Sekolah</h3>
+                        </div>
+                        <ul class="timeline-list">
+                            <li><strong>14.00 - 15.00:</strong>-</li>
+                            <li><strong>15.00 - 17.00:</strong>-</li>
+                            <li><strong>17.00 - 19.00:</strong>-</li>
+                            <li><strong>19.00 - 21.00:</strong>-</li>
+                            <li><strong>21.00 - 22.30:</strong>-</li>
+                            <li><strong>22.30 - 05.00:</strong>-</li>
+                        </ul>
+                    </div>
+
+                    <div class="timeline-card">
+                        <div class="timeline-header day-2">
+                            <h3>HARI KEDUA: Bakti Sosial di Gereja Santo Paulus Kleco</h3>
+                        </div>
+                        <ul class="timeline-list">
+                            <li><strong>05.00 - 06.30:</strong>-</li>
+                            <li><strong>06.30 - 08.00:</strong>-</li>
+                            <li><strong>08.00 - 09.00:</strong>-</li>
+                            <li><strong>09.00 - 11.30:</strong>-</li>
+                            <li><strong>11.30 - 13.00:</strong>-</li>
+                            <li><strong>13.00 - 14.00:</strong>-</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <h2 class="section-title mt-4">Daftar Agendakan Kelas Lainnya</h2>
+                <div class="grid-container" id="kegiatan-grid"></div>
+            </section>
+
+            <!-- TAB 2: ANGGOTA KELAS -->
+            <section id="tab-anggota" class="tab-content">
+                <div class="section-header-row">
+                    <h2 class="section-title">Struktur & Anggota Kelas</h2>
+                    <button id="btn-add-member" class="btn-success admin-only hidden">+ Tambah Anggota Baru</button>
+                </div>
+
+                <!-- Kategori 1: Wali Kelas -->
+                <div class="sub-section">
+                    <h3 class="category-heading">Wali Kelas</h3>
+                    <div class="teacher-container" id="teacher-grid"></div>
+                </div>
+
+                <!-- Kategori 2: Pengurus Inti Kelas -->
+                <div class="sub-section">
+                    <h3 class="category-heading">Pengurus Kelas</h3>
+                    <div class="grid-container" id="officers-grid"></div>
+                </div>
+
+                <!-- Kategori 3: Anggota Siswa -->
+                <div class="sub-section">
+                    <h3 class="category-heading">Anggota Siswa</h3>
+                    <div class="grid-container" id="students-grid"></div>
+                </div>
+            </section>
+
+            <!-- TAB 3: GALLERY -->
+            <section id="tab-gallery" class="tab-content">
+                <div class="gallery-header-row">
+                    <h2 class="section-title">Galeri Foto & Video Kegiatan</h2>
+                    <button id="btn-add-media" class="btn-success admin-only hidden">+ Tambah Media Baru</button>
+                </div>
+
+                <div class="gallery-grid" id="gallery-grid"></div>
+            </section>
+
+        </main>
+
+        <footer>
+            <p>&copy; 2026 Informasi Kelas. All Rights Reserved.</p>
+        </footer>
+    </div>
+
+    <!-- MODAL ANGGOTA KELAS (ADMIN) -->
+    <div id="modal-member" class="modal hidden">
+        <div class="modal-content">
+            <span class="close-modal" id="close-member-modal">&times;</span>
+            <h3 id="modal-member-title">Tambah Anggota Kelas</h3>
+            <form id="form-member">
+                <input type="hidden" id="member-id">
+                
+                <div class="form-group">
+                    <label for="member-type">Kategori Peran</label>
+                    <select id="member-type" class="form-control" required>
+                        <option value="pengurus">Pengurus Kelas (Ketua/Sekretaris/Bendahara)</option>
+                        <option value="siswa">Anggota Siswa</option>
+                        <option value="wali">Wali Kelas</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="member-name">Nama Lengkap</label>
+                    <input type="text" id="member-name" placeholder="Contoh: Ahmad Rizky" required>
+                </div>
+
+                <!-- Pilihan Kategori Nama Jabatan -->
+                <div class="form-group">
+                    <label for="member-role-select">Pilih Kategori Jabatan</label>
+                    <select id="member-role-select" class="form-control" required>
+                        <option value="Ketua Kelas">Ketua Kelas</option>
+                        <option value="Sekretaris 1">Sekretaris 1</option>
+                        <option value="Sekretaris 2">Sekretaris 2</option>
+                        <option value="Bendahara 1">Bendahara 1</option>
+                        <option value="Bendahara 2">Bendahara 2</option>
+                        <option value="Siswa" selected>Siswa (Anggota biasa)</option>
+                        <option value="Wali Kelas">Wali Kelas</option>
+                        <option value="Lainnya">Lainnya (Ketik Manual)...</option>
+                    </select>
+                </div>
+
+                <!-- Field tambahan jika memilih 'Lainnya' -->
+                <div class="form-group hidden" id="custom-role-group">
+                    <label for="member-role-custom">Nama Jabatan Kustom</label>
+                    <input type="text" id="member-role-custom" placeholder="Contoh: Sie Perlengkapan / Humas">
+                </div>
+
+                <div class="form-group">
+                    <label for="member-photo-file">Upload Foto dari Dokumen/Perangkat</label>
+                    <input type="file" id="member-photo-file" accept="image/*" class="form-control">
+                    <small class="hint-text">Atau gunakan URL di bawah jika tidak memiliki file lokal:</small>
+                    <input type="text" id="member-photo-url" placeholder="https://via.placeholder.com/150" class="form-control mt-1">
+                </div>
+
+                <button type="submit" class="btn-primary btn-block">Simpan Anggota</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL GALERI (ADMIN) -->
+    <div id="modal-media" class="modal hidden">
+        <div class="modal-content">
+            <span class="close-modal" id="close-media-modal">&times;</span>
+            <h3 id="modal-media-title">Tambah Foto / Video Galeri</h3>
+            <form id="form-media">
+                <input type="hidden" id="media-id">
+                
+                <div class="form-group">
+                    <label for="media-type">Tipe Media</label>
+                    <select id="media-type" class="form-control" required>
+                        <option value="image">Foto (Gambar)</option>
+                        <option value="video">Video (MP4 / WebM)</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="media-title">Judul / Deskripsi Media</label>
+                    <input type="text" id="media-title" placeholder="Contoh: Kebersamaan Hari Ke-1" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="media-file">Upload File Foto / Video dari Perangkat</label>
+                    <input type="file" id="media-file" accept="image/*,video/*" class="form-control">
+                    <small class="hint-text">Atau gunakan URL di bawah jika tidak memiliki file lokal:</small>
+                    <input type="text" id="media-url" placeholder="https://example.com/file.mp4" class="form-control mt-1">
+                </div>
+
+                <button type="submit" class="btn-primary btn-block">Simpan Media</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
